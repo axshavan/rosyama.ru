@@ -1,0 +1,3 @@
+*.komodoproject
+upload/*
+not_bitrix/config.php

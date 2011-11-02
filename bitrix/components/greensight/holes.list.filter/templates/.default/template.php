@@ -39,4 +39,3 @@
 			<? if($arResult['SHOW_RESET_LINK']): ?><span class="reset" onclick="document.location='/';"><?= GetMessage('HOLES_FILTER_RESET') ?></span><? endif; ?>
 		</form>
 </div>
-	

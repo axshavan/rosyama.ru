@@ -10,7 +10,7 @@ if(!CModule::IncludeModule('greensight_utils'))
 {
 	die();
 }
-require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/properties.php');
+//require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/properties.php');
 
 if(isset($_REQUEST['ajax']))
 {

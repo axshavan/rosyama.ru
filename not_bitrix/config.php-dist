@@ -1,0 +1,8 @@
+<?php
+
+define('DBHost', '');
+define('DBLogin', '');
+define('DBPassword', '');
+define('DBName', '');
+
+?>
