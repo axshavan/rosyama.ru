@@ -79,9 +79,9 @@
 			<div class="lCol">
 			<? $curpage=$APPLICATION->GetCurPage()?>
 				<?if($curpage!="/" || $_GET || $_POST):?>
-					<a href="/" class="logo" title="На главную"><img src="<?=SITE_TEMPLATE_PATH?>/images/logo.png"  alt="РосЯма" /></a>
+					<a href="/" class="logo" title="На главную"><img src="/<?=SITE_TEMPLATE_PATH?>/images/logo.png"  alt="РосЯма" /></a>
 				<?else:?>
-					<h1 class="logo"><img src="<?=SITE_TEMPLATE_PATH?>/images/logo.png" alt="РосЯма" /></h1>
+					<h1 class="logo"><img src="/<?=SITE_TEMPLATE_PATH?>/images/logo.png" alt="РосЯма" /></h1>
 				<?endif;?>
 				<?if($curpage=="/" || $curpage=="/about/" || $curpage=="/about/112/"  || defined("ERROR_404")):?>
 					<div class="btn">

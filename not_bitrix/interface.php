@@ -19,7 +19,7 @@ class BXFreeComponent
 	protected $arResult;
 	
 	//
-	public function IncludeComponent($name, $template, $arParams)
+	public function IncludeComponent($name, $template = '.default', $arParams = array())
 	{
 		global $APPLICATION;
 		global $USER;
@@ -42,7 +42,7 @@ class BXFreeComponent
 	}
 	
 	//
-	protected function IncludeComponentTemplate($name)
+	protected function IncludeComponentTemplate($name = false)
 	{
 		global $APPLICATION;
 		global $USER;
@@ -50,7 +50,12 @@ class BXFreeComponent
 		{
 			$name = 'template.php';
 		}
+		if(!$this->template)
+		{
+			$this->template = '.default';
+		}
 		$name = $_SERVER['DOCUMENT_ROOT'].$this->component_path.'/templates/'.$this->template.'/'.$name;
+		$name = str_replace('//', '/', $name);
 		if(file_exists($name))
 		{
 			$css_file = $this->component_path.'/templates/'.$this->template.'/style.css';
@@ -132,6 +137,12 @@ class BXFreeDBResult
 class BXFreeInterface
 {
 	//
+	public static function GetByID($id)
+	{
+		return new BXFreeDBResult(false);
+	}
+	
+	//
 	public static function GetCurDir() { }
 	
 	//
@@ -146,6 +157,13 @@ class BXFreeInterface
 	
 	//
 	public static function GetIBlockList($arSort, $arFilter)
+	{
+		$result = new BXFreeDBResult(false);
+		return $result;
+	}
+	
+	//
+	public static function GetIBlockElementList($arSort, $arFilter)
 	{
 		$result = new BXFreeDBResult(false);
 		return $result;

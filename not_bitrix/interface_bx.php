@@ -26,7 +26,11 @@ class CApplication
 class CDatabase extends BXFreeDB { }
 class CIBlock
 {
-	public static function GetList($arSort, $arFilter) { return BXFreeInterface::GetIBlockList($arSort, $arFilter); }
+	public function GetList($arSort, $arFilter) { return BXFreeInterface::GetIBlockList($arSort, $arFilter); }
+}
+class CIBlockElement
+{
+	public function GetList($arSort, $arFilter) { return BXFreeInterface::GetIBlockElementList($arSort, $arFilter); }
 }
 class CIBlockPropertyMapYandex
 {
@@ -42,8 +46,9 @@ class CSite
 }
 class CUser
 {
-	public function IsAdmin() { return BXFreeInterface::IsAdmin(); }
+	public function GetByID($id) { return BXFreeInterface::GetByID($id); }
 	public function GetID() { return BXFreeInterface::GetID(); }
+	public function IsAdmin() { return BXFreeInterface::IsAdmin(); }
 }
 
 function IncludeModuleLangFile($file) { return BXFreeInterface::IncludeModuleLangFile($file); }

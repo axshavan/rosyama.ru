@@ -14,7 +14,7 @@ if(!CModule::IncludeModule('iblock'))
 {
 	die();
 }
-require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/properties.php');
+//require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/properties.php');
 
 global $USER;
 $ID = (int)$arParams['ID'];
@@ -110,10 +110,7 @@ if($arResult['HOLE']['ADR_SUBJECTRF'])
 
 if(isset($_GET['pdf']))
 {
-	ob_end_clean();
-	ob_end_clean();
-	ob_end_clean();
-	ob_end_clean();
+	while(ob_get_level()) ob_end_clean();
 
 	$_images = array();
 	$date3 = isset($_POST['application_data'])   ? strtotime($_POST['application_data']) : time();
