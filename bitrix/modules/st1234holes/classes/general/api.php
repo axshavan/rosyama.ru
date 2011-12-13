@@ -549,6 +549,7 @@ class C1234HoleApi
 		<method name="set_replied">
 			<field>files</field>
 			<field>comment</field>
+			<field>deletefiles</field>
 		</method>
 	</state>
 <?
@@ -1420,7 +1421,26 @@ class C1234HoleApi
 					'small_sizex'    => 240,
 					'small_sizey'    => 160
 				);
-				// разберёмся с файлами
+				
+				// если надо удалить файлы, удалим
+				if(!is_array($_REQUEST['deletefiles']))
+				{
+					$_fields['DELETEFILES'] = explode(',', $_REQUEST['deletefiles']);
+				}
+				foreach($_fields['DELETEFILES'] as &$f)
+				{
+					$f = trim($f);
+					if(strlen($f) && substr($f, 0, 2) == 'gr')
+					{
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/original/'.$hole_id.'/'.$f);
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/medium/'.$hole_id.'/'.$f);
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/small/'.$hole_id.'/'.$f);
+					}
+				}
+				unset($_REQUEST['deletefiles']);
+				unset($_fields['DELETEFILES']);
+				
+				// разберёмся с загружаемыми файлами
 				$files_count = 0;
 				foreach($_FILES as $file)
 				{
