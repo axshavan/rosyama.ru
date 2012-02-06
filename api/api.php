@@ -198,6 +198,13 @@ else
 				$mode = 'getregions';
 				break;
 			}
+			case 'getgibddheadbyregion':
+			{
+				// узнать ФИО начальника УГИБДД по ID региона
+				$mode = 'getgibddheadbyregion';
+				break;
+			}	
+				
 			case 'exit':
 			{
 				// разлогиниться

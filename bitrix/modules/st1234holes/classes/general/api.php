@@ -3,7 +3,7 @@
 class C1234HoleApi
 {
 	// типы дефектов
-	public static $_allowed_types    = array('badroad', 'holeonroad', 'hatch', 'rails', 'holeinyard');
+	public static $_allowed_types    = array('badroad', 'holeonroad', 'hatch', 'rails', 'holeinyard', 'snow');
 	public static $_deprecated_types = array('crossing', 'nomarking', 'policeman', 'fence', 'light');
 	
 	/**
@@ -431,6 +431,15 @@ class C1234HoleApi
 				echo C1234HoleApiXML::GetRegions();
 				break;
 			}
+			case 'getgibddheadbyregion':
+			{
+				$id=0;
+				if (isset($_GET['region_id']) && $_GET['region_id']) $id=$_GET['region_id'];
+				if (isset($_POST['region_id']) && $_POST['region_id']) $id=$_POST['region_id'];
+				if ($id && CGreensightRFSubject::isID($id)) echo C1234HoleApiXML::GetRegionGIBDD($id);
+				else echo C1234HoleApiXML::Error('NOT_FOUND'); 
+				break;
+			}			
 			case 'getupdmethods':
 			{
 				// получить список возможных методов обновления дефекта
