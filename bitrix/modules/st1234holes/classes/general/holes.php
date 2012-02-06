@@ -462,12 +462,8 @@ class C1234Hole
 		
 		// собственно запрос к бд и обработка результата
 		global $DB;
-		//print_r($filter);
-		//echo $sql_str;
 		$res = CGreensightDBQueryCache::QueryCached($sql_str);
-		//$res = $DB->Query($sql_str);
 		$_result = array();
-		//while($ar = $res->Fetch())
 		foreach($res as &$ar)
 		{
 			$ar['~DATE_CREATED'] = date($DB->DateFormatToPHP(CSite::GetDateFormat('SHORT')), $ar['DATE_CREATED']);
@@ -505,9 +501,10 @@ class C1234Hole
 						}
 						elseif(substr($f, 0, 2) == 'gr')
 						{
-							$v['pictures']['original']['gibddreply'][] = '/upload/st1234/original/'.$k.'/'.$f;
-							$v['pictures']['medium']['gibddreply'][]   = '/upload/st1234/medium/'.$k.'/'.$f;
-							$v['pictures']['small']['gibddreply'][]    = '/upload/st1234/small/'.$k.'/'.$f;
+							$v['pictures']['original']['gibddreply'][]  = '/upload/st1234/original/'.$k.'/'.$f;
+							$v['pictures']['medium']['gibddreply'][]    = '/upload/st1234/medium/'.$k.'/'.$f;
+							$v['pictures']['small']['gibddreply'][]     = '/upload/st1234/small/'.$k.'/'.$f;
+							$v['pictures']['filectime']['gibddreply'][] = filectime($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/medium/'.$k.'/'.$f);
 						}
 						else
 						{

@@ -34,6 +34,13 @@ $aMenuLinks = Array(
 		Array(), 
 		Array(), 
 		"" 
+	),
+	Array(
+		"Справочники", 
+		"/sprav/", 
+		Array(), 
+		Array(), 
+		"" 
 	)
 );
 ?>

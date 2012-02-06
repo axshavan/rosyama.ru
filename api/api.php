@@ -4,11 +4,10 @@ ob_start();
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
 CModule::IncludeModule('st1234hole');
 global $USER;
-ob_end_clean();
-ob_end_clean();
-ob_end_clean();
-ob_end_clean();
-ob_end_clean();
+while(ob_get_level())
+{
+	ob_end_clean();
+}
 
 // уберём хедеры
 if(!headers_sent())
@@ -199,6 +198,13 @@ else
 				$mode = 'getregions';
 				break;
 			}
+			case 'getgibddheadbyregion':
+			{
+				// узнать ФИО начальника УГИБДД по ID региона
+				$mode = 'getgibddheadbyregion';
+				break;
+			}	
+				
 			case 'exit':
 			{
 				// разлогиниться

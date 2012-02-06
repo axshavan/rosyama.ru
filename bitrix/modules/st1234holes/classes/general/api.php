@@ -3,7 +3,7 @@
 class C1234HoleApi
 {
 	// типы дефектов
-	public static $_allowed_types    = array('badroad', 'holeonroad', 'hatch', 'rails', 'holeinyard');
+	public static $_allowed_types    = array('badroad', 'holeonroad', 'hatch', 'rails', 'holeinyard', 'snow');
 	public static $_deprecated_types = array('crossing', 'nomarking', 'policeman', 'fence', 'light');
 	
 	/**
@@ -431,6 +431,15 @@ class C1234HoleApi
 				echo C1234HoleApiXML::GetRegions();
 				break;
 			}
+			case 'getgibddheadbyregion':
+			{
+				$id=0;
+				if (isset($_GET['region_id']) && $_GET['region_id']) $id=$_GET['region_id'];
+				if (isset($_POST['region_id']) && $_POST['region_id']) $id=$_POST['region_id'];
+				if ($id && CGreensightRFSubject::isID($id)) echo C1234HoleApiXML::GetRegionGIBDD($id);
+				else echo C1234HoleApiXML::Error('NOT_FOUND'); 
+				break;
+			}			
 			case 'getupdmethods':
 			{
 				// получить список возможных методов обновления дефекта
@@ -519,6 +528,10 @@ class C1234HoleApi
 			<field>comment</field>
 		</method>
 		<method name="to_prosecutor"></method>
+		<method name="set_replied">
+			<field>files</field>
+			<field>comment</field>
+		</method>
 	</state>
 <?
 				}
@@ -545,6 +558,7 @@ class C1234HoleApi
 		<method name="set_replied">
 			<field>files</field>
 			<field>comment</field>
+			<field>deletefiles</field>
 		</method>
 	</state>
 <?
@@ -1394,7 +1408,7 @@ class C1234HoleApi
 					echo "\t".'<callresult result="0">fail</callresult>'."\n";
 					break;
 				}
-				if($hole['STATE'] != 'inprogress' && $hole['STATE'] != 'gibddre')
+				if($hole['STATE'] != 'inprogress' && $hole['STATE'] != 'gibddre' && $hole['STATE'] != 'achtung')
 				{
 					echo C1234HoleApiXML::Error('UNAPPROPRIATE_METHOD');
 					echo "\t".'<callresult result="0">fail</callresult>'."\n";
@@ -1416,7 +1430,26 @@ class C1234HoleApi
 					'small_sizex'    => 240,
 					'small_sizey'    => 160
 				);
-				// разберёмся с файлами
+				
+				// если надо удалить файлы, удалим
+				if(!is_array($_REQUEST['deletefiles']))
+				{
+					$_fields['DELETEFILES'] = explode(',', $_REQUEST['deletefiles']);
+				}
+				foreach($_fields['DELETEFILES'] as &$f)
+				{
+					$f = trim($f);
+					if(strlen($f) && substr($f, 0, 2) == 'gr')
+					{
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/original/'.$hole_id.'/'.$f);
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/medium/'.$hole_id.'/'.$f);
+						unlink($_SERVER['DOCUMENT_ROOT'].'/upload/st1234/small/'.$hole_id.'/'.$f);
+					}
+				}
+				unset($_REQUEST['deletefiles']);
+				unset($_fields['DELETEFILES']);
+				
+				// разберёмся с загружаемыми файлами
 				$files_count = 0;
 				foreach($_FILES as $file)
 				{

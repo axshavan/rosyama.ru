@@ -13,7 +13,7 @@ $hole = $arResult['HOLE'];
 				<span class="state">
 					<?= GetMessage('HOLE_STATE_'.$hole['STATE']) ?>
 					<? if($hole['STATE'] == 'prosecutor' && $hole['DATE_STATUS']): ?>
-						<?= $hole['~DATE_STATUS'].' '/*.GetMessage('REQUEST_TO_PROSECUTOR_SENT')*/ ?>
+						<?= $hole['~DATE_STATUS'] ?>
 					<? elseif($hole['STATE'] != 'fixed' && $hole['~DATE_SENT']): ?>
 						<?= $hole['~DATE_SENT'].' '.GetMessage('HOLE_REQUEST_SENT') ?>
 					<? endif; ?>
@@ -165,6 +165,7 @@ $hole = $arResult['HOLE'];
 							<p><?= GetMessage('HOLE_CART_ADMIN_TEXT_16') ?></p>
 							<p><a href="#" onclick="var c=document.getElementById('prosecutor_form');if(c){c.style.display=c.style.display=='block'?'none':'block';}return false;" class="declarationBtn"><?= GetMessage('HOLE_CART_ADMIN_TEXT_14') ?></a></p>
 							<p><a href="/personal/edit.php?PROSECUTOR_ID=<?= $hole['ID'] ?>" class="declarationBtn">Жалоба в прокуратуру подана</a></p>
+							<p><a href="/personal/edit.php?GIBDD_REPLY_ID=<?= $hole['ID'] ?>" class="declarationBtn">Ответ из ГИБДД</a></p>
 						</div>
 						<div class="pdf_form" id="prosecutor_form"<?= isset($_GET['show_prosecutor_form']) ? ' style="display: block;"' : '' ?>>
 							<a href="#" onclick="var c=document.getElementById('prosecutor_form');if(c){c.style.display=c.style.display=='block'?'none':'block';}return false;" class="close">&times;</a>
@@ -342,16 +343,11 @@ $hole = $arResult['HOLE'];
 			<p><b>BBcode для форума:</b></p>
 			<textarea onfocus="selectAll(this)" rows="3">[url=http://<?=$_SERVER["SERVER_NAME"].$APPLICATION->GetCurPage()?>][img]http://<?=$_SERVER["SERVER_NAME"].$hole['pictures']['medium']['fresh'][0]?>[/img][/url][url=http://<?=$_SERVER["SERVER_NAME"].$APPLICATION->GetCurPage()?>] 
 			РосЯма :: <?=htmlspecialcharsEx($hole['ADDRESS'])?>[/url]</textarea>
-			
-			
 		</div>
 </div>
 <div class="rCol">
 	<div class="b">
 		<div class="before">
-			<? if(sizeof($hole['pictures']['medium']['fixed'])): ?>
-				<?/*<h2><?= GetMessage('HOLE_ITWAS') ?></h2>*/?>
-			<? endif; ?>
 			<? foreach($hole['pictures']['medium']['fresh'] as $src): ?>
 				<img src="<?= $src ?>">
 			<? endforeach; ?>
@@ -364,10 +360,21 @@ $hole = $arResult['HOLE'];
 				</div>
 				<? endif; ?>
 				<h2><?= GetMessage('HOLE_GIBDDREPLY') ?></h2>
-				<? foreach($hole['pictures']['medium']['gibddreply'] as $src): ?>
-					<img src="<?= $src ?>">
+				<? foreach($hole['pictures']['medium']['gibddreply'] as $k => $src): ?>
+					<?
+					$img_id = explode('/', $src);
+					$img_id = preg_replace('/\D/', '', $img_id[sizeof($img_id) - 1]);
+					?>
+					<br />
+					<p id="gibddreimg_<?= $img_id ?>">
+						<strong><?= date('Y.m.d', $hole['pictures']['filectime']['gibddreply'][$k]) ?></strong>
+						<? if($USER->GetID() == $hole['USER_ID'] || $USER->IsAdmin()): ?>
+							<a class="declarationBtn" onclick="gibddre_img_del('<?= $hole['ID'] ?>', '<?= $img_id ?>')">Удалить это изображение</a>
+						<? endif; ?>
+						<br />
+						<img src="<?= $src ?>">
+					</p>
 				<? endforeach; ?>
-			
 			</div>
 		<? endif; ?>
 		<? if($hole['STATE'] == 'fixed'): ?>
